@@ -190,15 +190,3 @@ uses:
           body:
             application/json:
               type: BankingTypes.Transaction
-    patch:
-      is: [ GlobalResources.Trackable, GlobalResources.ErrorResponses ]
-      description: Update an existing transaction entry. Returns a complete version of the updated transaction entry.
-      body:
-        application/json:
-          type: BankingTypes.Transaction
-      responses:
-        200:
-          body:
-            application/json:
-              type: BankingTypes.Transaction
-
