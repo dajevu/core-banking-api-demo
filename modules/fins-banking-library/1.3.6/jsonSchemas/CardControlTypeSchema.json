@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/CardControlType",
+  "definitions": {
+    "CardControlType": {
+      "enum": [
+        "ATM",
+        "INTERNATIONAL",
+        "ONLINE",
+        "POS"
+      ],
+      "type": "string"
+    }
+  }
+}

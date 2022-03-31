@@ -1,0 +1,216 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/Bank",
+  "definitions": {
+    "Bank": {
+      "discriminator": "institutionType",
+      "type": "object",
+      "description": "Defines properties specific to a banking institution",
+      "additionalProperties": true,
+      "required": [
+        "name",
+        "institutionType",
+        "id",
+        "bankCode",
+        "headquartersCountry"
+      ],
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The global identifier for this item"
+        },
+        "name": {
+          "type": "string",
+          "description": "Descriptive name of the institution"
+        },
+        "institutionType": {
+          "type": "string",
+          "description": "Discriminator property set to the specific type of institution by name (e.g., Bank)"
+        },
+        "externalIds": {
+          "type": "array",
+          "description": "External identifiers for this institution (e.g., IBAN, BBAN, etc.)",
+          "items": {
+            "type": "object",
+            "example": {
+              "externalIdType": [
+                {
+                  "id": "id1",
+                  "name": "adipisicing labore Duis in anim"
+                }
+              ],
+              "externalId": "Ut",
+              "id": "irure proident cillum deserunt dolor",
+              "status": "INVALID",
+              "statusLastChangedDate": "1999-11-26T02:28:11.661Z"
+            },
+            "description": "Defines a structure for referencing an entity in external systems",
+            "additionalProperties": true,
+            "required": [
+              "externalIdType",
+              "externalId",
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "externalId": {
+                "type": "string",
+                "description": "A unique identifier assigned to an entity in another system"
+              },
+              "externalIdType": {
+                "description": "Identifies the system that owns or otherwise recognizes this unique identifier",
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "description": "Identifies the external system that owns or otherwise recognizes a particular identifier",
+                      "type": "object",
+                      "additionalProperties": true,
+                      "required": [
+                        "id",
+                        "name"
+                      ],
+                      "properties": {
+                        "id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "status": {
+                "enum": [
+                  "VALID",
+                  "INVALID"
+                ],
+                "description": "Indicates whether this identifier is currently valid or not",
+                "type": "string"
+              },
+              "statusLastChangedDate": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Date and time of the last change in status"
+              }
+            }
+          }
+        },
+        "auditInfo": {
+          "description": "Defines standard system audit fields available for most types",
+          "type": "object",
+          "example": {
+            "isDeleted": true,
+            "createdBy": "commodo minim dolore est",
+            "updatedBy": "dolor quis nulla",
+            "updatedDate": "1950-01-23T19:52:29.659Z",
+            "createdDate": "1950-01-23T19:52:29.659Z"
+          },
+          "additionalProperties": true,
+          "required": [
+            "isDeleted",
+            "createdBy",
+            "updatedBy",
+            "updatedDate",
+            "createdDate"
+          ],
+          "properties": {
+            "createdDate": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Timestamp of when the entity was created"
+            },
+            "createdBy": {
+              "type": "string",
+              "description": "Identifies the system or user which created the entity"
+            },
+            "updatedDate": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Timestamp of when the entity was last updated"
+            },
+            "updatedBy": {
+              "type": "string",
+              "description": "Identifies the system or user which last updated the entity"
+            },
+            "isDeleted": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Indicates whether or not the entity has been soft-deleted"
+            }
+          }
+        },
+        "bankCode": {
+          "type": "string"
+        },
+        "headquartersCountry": {
+          "type": "string",
+          "description": "Country of primary headquarters"
+        },
+        "headquartersRegion": {
+          "type": "string",
+          "description": "Province or state of primary headquarters"
+        },
+        "headquartersCity": {
+          "type": "string",
+          "description": "City of primary headquarters"
+        }
+      }
+    }
+  }
+}

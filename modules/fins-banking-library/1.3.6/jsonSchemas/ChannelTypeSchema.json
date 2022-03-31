@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/ChannelType",
+  "definitions": {
+    "ChannelType": {
+      "enum": [
+        "LOCAL",
+        "Bank_SWIFT",
+        "Bank_ACH",
+        "Bank_Fedwire",
+        "Bank_SEPA",
+        "Blockchain",
+        "TransferWise",
+        "Stripe",
+        "Square",
+        "Zelle",
+        "VISA",
+        "MasterCard",
+        "AMEX",
+        "Discover"
+      ],
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/PaymentExecutionRequest",
+  "definitions": {
+    "PaymentExecutionRequest": {
+      "description": "Defines the input properties for a multistage routing request",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "Amount": {
+          "type": "number"
+        },
+        "CreditorBank": {
+          "type": "string"
+        },
+        "CreditorBankCountry": {
+          "type": "string"
+        },
+        "CreditorAccountType": {
+          "type": "string"
+        },
+        "CreditorAcountCurrency": {
+          "type": "string"
+        },
+        "DebtorBank": {
+          "type": "string"
+        },
+        "DebtorBankCountry": {
+          "type": "string"
+        },
+        "DebtorAccountType": {
+          "type": "string"
+        },
+        "DebtorAcountCurrency": {
+          "type": "string"
+        },
+        "TransferType": {
+          "enum": [
+            "CREDIT_TRANSFER",
+            "DEBIT_TRANSFER",
+            "REMITTANCE",
+            "CASH_IN",
+            "CASH_OUT",
+            "PAYMENT",
+            "TRANSFER",
+            "INTERNATIONAL_TRANSFER",
+            "NATIONAL_TRANSFER",
+            "CREDIT_CARD_PAYMENT",
+            "ALTERNATIVE_PAYMENT",
+            "CRYPTO_PAYMENT"
+          ],
+          "type": "string"
+        },
+        "ChannelType": {
+          "enum": [
+            "LOCAL",
+            "Bank_SWIFT",
+            "Bank_ACH",
+            "Bank_Fedwire",
+            "Bank_SEPA",
+            "Blockchain",
+            "TransferWise",
+            "Stripe",
+            "Square",
+            "Zelle",
+            "VISA",
+            "MasterCard",
+            "AMEX",
+            "Discover"
+          ],
+          "type": "string"
+        },
+        "Stage": {
+          "enum": [
+            "OB_EXPERIENCE",
+            "CORE_PROCESS",
+            "PROTOCOL_SYSTEM"
+          ],
+          "type": "string"
+        }
+      }
+    }
+  }
+}

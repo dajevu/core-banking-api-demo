@@ -1,0 +1,23 @@
+#%RAML 1.0 NamedExample
+payment-transaction-example:
+  PaymentId: "DWSONZL1BOI"
+  Amount: 
+    Amount: 333.33
+    Currency: "USD"
+  TransactionCost: 10.0
+  TransactionDate: "2022-01-03T15:34:16.000Z"
+  TransferProtocol: "SWIFT"
+  PaymentPath: "XFER_INTER_BANK_INT"
+  PaymentStatus: "PROCESSED"
+  Debtor: 
+    Account: 
+      AccountId: "123456"
+      AccountType: "CHECKING"
+      BankId: "IBAN_NUM"
+      BankName: "BOA"
+  Creditor: 
+    Account: 
+      AccountId: "123456"
+      AccountType: "CHECKING"
+      BankId: "IBAN_NUM"
+      BankName: "BOA"

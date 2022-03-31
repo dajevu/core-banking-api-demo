@@ -1,0 +1,98 @@
+#%RAML 1.0 Library
+usage: Provides FINS Banking types
+
+uses:
+  AccountTypes: ./libraries/AccountTypeLibrary.raml
+  CardTypes: ./libraries/CardTypeLibrary.raml
+  DocumentTypes: ./libraries/DocumentTypeLibrary.raml
+  InstitutionTypes: ./libraries/InstitutionTypeLibrary.raml
+  LoanTypes: ./libraries/LoanTypeLibrary.raml
+  PaymentTypes: ./libraries/PaymentTypeLibrary.raml
+  TransactionTypes: ./libraries/TransactionTypeLibrary.raml
+
+types:
+  # Exported Account types
+  Account: 
+    type: AccountTypes.Account
+    examples: !include ./examples/AccountExample.raml
+  AccountTransactionHistory:
+    type: AccountTypes.AccountTransactionHistory
+    examples: !include ./examples/AccountTransactionHistoryExample.raml
+  BlockchainAccount: 
+    type: AccountTypes.BlockchainAccount
+    examples: !include ./examples/BlockchainAccountExample.raml
+  CreditAccount:  
+    type: AccountTypes.CreditAccount
+    examples: !include ./examples/CreditAccountExample.raml
+  CreditCardAccount:  
+    type: AccountTypes.CreditCardAccount
+    examples: !include ./examples/CreditCardAccountExample.raml
+  DepositAccount:  
+    type: AccountTypes.DepositAccount
+    examples: !include ./examples/DepositAccountExample.raml
+  GeneralLedgerAccount: 
+    type: AccountTypes.GeneralLedgerAccount
+    examples: !include ./examples/GeneralLedgerAccountExample.raml
+  LoanAccount:  
+    type: AccountTypes.LoanAccount
+    examples: !include ./examples/LoanAccountExample.raml
+
+  # Exported Card types
+  Card:
+    type: CardTypes.Card
+    examples: !include ./examples/CardExample.raml
+  CreditCard:
+    type: CardTypes.CreditCard
+    examples: !include ./examples/CreditCardExample.raml
+  DebitCard:
+    type: CardTypes.DebitCard
+    examples: !include ./examples/DebitCardExample.raml
+
+  # Exported Document types
+  Document:
+    type: DocumentTypes.Document
+    examples: !include ./examples/DocumentExample.raml
+  LoanDocument:
+    type: DocumentTypes.LoanDocument
+    examples: !include ./examples/LoanDocumentExample.raml
+  
+  # Exported Institution types
+  Institution:
+    type: InstitutionTypes.Institution
+    examples: !include ./examples/InstitutionExample.raml
+  Bank:
+    type: InstitutionTypes.Bank
+    examples: !include ./examples/BankExample.raml
+
+  # Exported loan types
+  LoanApplication:
+    type: LoanTypes.LoanApplication
+    examples: !include ./examples/LoanApplicationExample.raml
+
+  # Exported Payment types
+  PaymentExecutionRequest:
+    type: PaymentTypes.PaymentExecutionRequest
+    examples: !include ./examples/PaymentExecutionRequestExample.raml
+  PaymentExecutionResponse:
+    type: PaymentTypes.PaymentExecutionResponse
+    examples: !include ./examples/PaymentExecutionResponseExample.raml
+  PaymentSummary:
+    type: PaymentTypes.PaymentSummary
+    examples: !include ./examples/PaymentSummaryExample.raml
+
+  # Exported Transaction types
+  DebitTransaction:  
+    type: TransactionTypes.DebitTransaction
+    examples: !include ./examples/DebitTransactionExample.raml
+  CreditTransaction:  
+    type: TransactionTypes.CreditTransaction
+    examples: !include ./examples/CreditTransactionExample.raml
+  PaymentTransaction:  
+    type: TransactionTypes.PaymentTransaction
+    examples: !include ./examples/PaymentTransactionExample.raml
+  Transaction:  
+    type: TransactionTypes.Transaction
+    examples: !include ./examples/TransactionExample.raml
+  TransferTransaction:  
+    type: TransactionTypes.TransferTransaction
+    examples: !include ./examples/TransferTransactionExample.raml

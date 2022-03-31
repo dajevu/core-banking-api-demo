@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/PaymentType",
+  "definitions": {
+    "PaymentType": {
+      "enum": [
+        "CREDIT_TRANSFER",
+        "DEBIT_TRANSFER",
+        "REMITTANCE",
+        "CASH_IN",
+        "CASH_OUT",
+        "PAYMENT",
+        "TRANSFER",
+        "INTERNATIONAL_TRANSFER",
+        "NATIONAL_TRANSFER",
+        "CREDIT_CARD_PAYMENT",
+        "ALTERNATIVE_PAYMENT",
+        "CRYPTO_PAYMENT"
+      ],
+      "type": "string"
+    }
+  }
+}

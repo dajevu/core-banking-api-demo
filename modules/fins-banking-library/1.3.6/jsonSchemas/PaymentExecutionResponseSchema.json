@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/PaymentExecutionResponse",
+  "definitions": {
+    "PaymentExecutionResponse": {
+      "description": "Defines the output properties for a multistage routing request",
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "PaymentExecutionPath",
+        "PaymentExecutionCode"
+      ],
+      "properties": {
+        "PaymentExecutionPath": {
+          "type": "string"
+        },
+        "PaymentExecutionCode": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+#%RAML 1.0 Library
+usage: Defines types representing bank and credit cards
+
+uses:
+  GlobalTypes: ../exchange_modules/org.mule.examples/accelerator-cim-global-library/1.1.2/accelerator-cim-global-library.raml
+  SharedTypes: ./SharedTypeLibrary.raml
+
+types:
+  Document:
+    description: Base type for all documents
+    properties:
+      id:
+        type: string | nil
+        description: The global identifier for this item
+      name?:
+        type: string
+        description: Display name of the document
+      description?:
+        type: string
+        description: Purpose of the document
+      documentStatus:
+        type: SharedTypes.DocumentStatusType
+      signatureStatus?:
+        enum: [ DECLINED, SIGNED, UNSIGNED ]
+      externalIds?:
+        type: array
+        items: GlobalTypes.ExternalId
+      auditInfo?:
+        type: GlobalTypes.AuditInfo
+
+  LoanDocument:
+    type: Document
+    description: Defines a document associated with loans
+    properties:
+      loanApplication:
+        type: string
+        description: References the loan application this document applies to

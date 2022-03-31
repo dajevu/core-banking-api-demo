@@ -1,0 +1,289 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/DebitCard",
+  "definitions": {
+    "DebitCard": {
+      "description": "Base type for all financial cards",
+      "discriminator": "cardType",
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "dailyPurchaseLimit",
+        "name",
+        "cardNumber",
+        "id",
+        "cardPin",
+        "cardOwnershipType",
+        "cardholderName",
+        "cardStatus",
+        "cardType"
+      ],
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The global identifier for this item"
+        },
+        "name": {
+          "type": "string",
+          "description": "Display name of this card"
+        },
+        "cardType": {
+          "type": "string",
+          "description": "Discriminator property set to the specific type of card by name (e.g., CreditCard)"
+        },
+        "cardNumber": {
+          "type": "string",
+          "description": "Full card number"
+        },
+        "cardholderName": {
+          "type": "string",
+          "description": "Name of the owner as it appears on this card"
+        },
+        "cardOwnerId": {
+          "type": "string",
+          "description": "Identifier of the individual this card is owned by"
+        },
+        "accountIds": {
+          "type": "array",
+          "description": "Identifier(s) of the financial account(s) this card is associated with",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cardPin": {
+          "type": "string"
+        },
+        "cardStatus": {
+          "enum": [
+            "ACTIVE",
+            "LOCKED",
+            "INACTIVE"
+          ],
+          "type": "string"
+        },
+        "cardStatusChangedDate": {
+          "type": "string",
+          "description": "Date and time of the last change in card status",
+          "format": "date-time"
+        },
+        "expiryMonth": {
+          "type": "integer",
+          "description": "Numeric index of the month this card expires in; optional for some card types"
+        },
+        "expiryYear": {
+          "type": "integer",
+          "description": "Year this card expires in; optional for some card types"
+        },
+        "replacedCardId": {
+          "type": "string",
+          "description": "Identifier of the card this one replaces"
+        },
+        "replacedCardReason": {
+          "enum": [
+            "DAMAGED",
+            "LOST",
+            "OTHER",
+            "RENEWED",
+            "STOLEN"
+          ],
+          "description": "Indicates why this card was issued in place of a previous one",
+          "type": "string"
+        },
+        "externalIds": {
+          "type": "array",
+          "description": "External identifiers for this card (e.g., Salesforce, MDM, etc.)",
+          "items": {
+            "type": "object",
+            "example": {
+              "externalIdType": [
+                {
+                  "id": "id1",
+                  "name": "adipisicing labore Duis in anim"
+                }
+              ],
+              "externalId": "Ut",
+              "id": "irure proident cillum deserunt dolor",
+              "status": "INVALID",
+              "statusLastChangedDate": "1999-11-26T02:28:11.661Z"
+            },
+            "description": "Defines a structure for referencing an entity in external systems",
+            "additionalProperties": true,
+            "required": [
+              "externalIdType",
+              "externalId",
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "externalId": {
+                "type": "string",
+                "description": "A unique identifier assigned to an entity in another system"
+              },
+              "externalIdType": {
+                "description": "Identifies the system that owns or otherwise recognizes this unique identifier",
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "description": "Identifies the external system that owns or otherwise recognizes a particular identifier",
+                      "type": "object",
+                      "additionalProperties": true,
+                      "required": [
+                        "id",
+                        "name"
+                      ],
+                      "properties": {
+                        "id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "status": {
+                "enum": [
+                  "VALID",
+                  "INVALID"
+                ],
+                "description": "Indicates whether this identifier is currently valid or not",
+                "type": "string"
+              },
+              "statusLastChangedDate": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Date and time of the last change in status"
+              }
+            }
+          }
+        },
+        "auditInfo": {
+          "description": "Defines standard system audit fields available for most types",
+          "type": "object",
+          "example": {
+            "isDeleted": true,
+            "createdBy": "commodo minim dolore est",
+            "updatedBy": "dolor quis nulla",
+            "updatedDate": "1950-01-23T19:52:29.659Z",
+            "createdDate": "1950-01-23T19:52:29.659Z"
+          },
+          "additionalProperties": true,
+          "required": [
+            "isDeleted",
+            "createdBy",
+            "updatedBy",
+            "updatedDate",
+            "createdDate"
+          ],
+          "properties": {
+            "createdDate": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Timestamp of when the entity was created"
+            },
+            "createdBy": {
+              "type": "string",
+              "description": "Identifies the system or user which created the entity"
+            },
+            "updatedDate": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Timestamp of when the entity was last updated"
+            },
+            "updatedBy": {
+              "type": "string",
+              "description": "Identifies the system or user which last updated the entity"
+            },
+            "isDeleted": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Indicates whether or not the entity has been soft-deleted"
+            }
+          }
+        },
+        "cardOwnershipType": {
+          "enum": [
+            "OTHER",
+            "PRIMARY",
+            "SECONDARY"
+          ],
+          "description": "The type of ownership the individual has on this card",
+          "type": "string"
+        },
+        "cardControls": {
+          "type": "array",
+          "description": "Optional list of controls applied to this card (e.g., ATM only)",
+          "items": {
+            "enum": [
+              "ATM",
+              "INTERNATIONAL",
+              "ONLINE",
+              "POS"
+            ],
+            "type": "string"
+          }
+        },
+        "dailyPurchaseLimit": {
+          "type": "number",
+          "description": "Maximum amount that can be purchased with this card per day; a value of 0.0 indicates there is no limit"
+        }
+      }
+    }
+  }
+}

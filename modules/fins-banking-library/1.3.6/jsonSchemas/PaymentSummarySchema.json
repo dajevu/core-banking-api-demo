@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/PaymentSummary",
+  "definitions": {
+    "PaymentSummary": {
+      "description": "Defines payment summary information required for reconciliation",
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "PaymentId",
+        "Amount",
+        "TransactionDate",
+        "TransferProtocol",
+        "PaymentPath",
+        "PaymentStatus",
+        "Debtor",
+        "Creditor"
+      ],
+      "properties": {
+        "PaymentId": {
+          "type": "string"
+        },
+        "Amount": {
+          "description": "Defines basic account information required for paymetn reconciliation",
+          "type": "object",
+          "additionalProperties": true,
+          "required": [
+            "Amount"
+          ],
+          "properties": {
+            "Amount": {
+              "type": "number"
+            },
+            "Currency": {
+              "type": "string"
+            }
+          }
+        },
+        "TransactionCost": {
+          "type": "number"
+        },
+        "TransactionDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "TransferProtocol": {
+          "enum": [
+            "ACH",
+            "Fedwire",
+            "SWIFT"
+          ],
+          "type": "string"
+        },
+        "PaymentPath": {
+          "type": "string"
+        },
+        "PaymentStatus": {
+          "type": "string"
+        },
+        "Debtor": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": [
+            "Account"
+          ],
+          "properties": {
+            "Account": {
+              "description": "Defines basic account information required for payment reconciliation",
+              "type": "object",
+              "additionalProperties": true,
+              "required": [
+                "AccountId"
+              ],
+              "properties": {
+                "AccountId": {
+                  "type": "string"
+                },
+                "AccountType": {
+                  "type": "string"
+                },
+                "BankId": {
+                  "type": "string"
+                },
+                "BankName": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Creditor": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": [
+            "Account"
+          ],
+          "properties": {
+            "Account": {
+              "description": "Defines basic account information required for payment reconciliation",
+              "type": "object",
+              "additionalProperties": true,
+              "required": [
+                "AccountId"
+              ],
+              "properties": {
+                "AccountId": {
+                  "type": "string"
+                },
+                "AccountType": {
+                  "type": "string"
+                },
+                "BankId": {
+                  "type": "string"
+                },
+                "BankName": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

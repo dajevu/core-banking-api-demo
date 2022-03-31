@@ -1,0 +1,38 @@
+#%RAML 1.0 NamedExample
+creditcard-account-example:
+  id: null
+  name: "Joint Visa Card"
+  accountNumber: "4514111111111111"
+  accountType: "CreditCardAccount"
+  primaryAccountOwner: "b7c4eddf-9c67-11eb-b4c8-0233bdd64096"
+  secondaryAccountOwners: [ "e665aed3-9a42-4e0c-a4fb-4725ca815758" ]
+  accountStatus: "OPEN"
+  accountBalance: 2345.00
+  availableBalance: 115.00
+  accountCurrency: "CAD"
+  accountLabel: "Visa"
+  interestRate: 0.25
+  taxIdentificationNumber: "012345678"
+  openedDate: "2020-03-15"
+  creditLimit: 2500.00
+  creditCards:
+  - id: null
+    name: "Joyce Credit Card"
+    cardType: "CreditCard"
+    creditCardType: "VISA"
+    cardholderName: "Joyce Witherspoon"
+    cardNumber: "4514111111111111"
+    maskedNumber: "451411******1111"
+    numberLastDigits: "1111"
+    cardPin: "9999"
+    cardToken: "999999"
+    cardSecurityCode: "555"
+    cardStatus: "ACTIVE"
+    expiryMonth: 11
+    expiryYear: 2021
+  auditInfo:
+    createdDate: "2020-03-15T15:03:01Z"
+    createdBy: "system"
+    updatedDate: "2020-03-15T15:03:01Z"
+    updatedBy: "system"
+    isDeleted: false

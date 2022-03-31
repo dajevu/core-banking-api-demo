@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/AccountTransactionHistory",
+  "definitions": {
+    "AccountTransactionHistory": {
+      "type": "object",
+      "description": "Defines a transaction summary object with account balances",
+      "additionalProperties": true,
+      "required": [
+        "transactionId",
+        "transactionName",
+        "transactionAmount",
+        "transactionType",
+        "transactionStatus",
+        "transactionDate"
+      ],
+      "properties": {
+        "transactionId": {
+          "type": "string",
+          "description": "The global identifier of the transaction"
+        },
+        "transactionName": {
+          "type": "string",
+          "description": "Display name of the transaction"
+        },
+        "transactionDescription": {
+          "type": "string",
+          "description": "Optional detailed description of the transaction"
+        },
+        "transactionAmount": {
+          "type": "number"
+        },
+        "transactionType": {
+          "type": "string",
+          "description": "The specific type of transaction by name (e.g., CreditTransaction)"
+        },
+        "transactionStatus": {
+          "enum": [
+            "CANCELLED",
+            "HOLD",
+            "PENDING",
+            "POSTED"
+          ],
+          "type": "string"
+        },
+        "transactionDate": {
+          "type": "string",
+          "description": "Date the transaction was recorded in the system",
+          "format": "date"
+        },
+        "transactionPostedDate": {
+          "type": "string",
+          "description": "Date the transaction was actually reflected in the account (aka settlement date)",
+          "format": "date"
+        },
+        "accountCurrentBalance": {
+          "type": "number",
+          "description": "Current credit (positive) or debit (negative) balance of the account"
+        },
+        "accountAvailableBalance": {
+          "type": "number",
+          "description": "Amount of funds (or credit) available for withdrawal, inclusive of overdraft"
+        }
+      }
+    }
+  }
+}

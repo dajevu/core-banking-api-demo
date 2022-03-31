@@ -1,0 +1,204 @@
+#%RAML 1.0 Library
+usage: Defines types representing Bank Accounts
+
+uses:
+  GlobalTypes: ../exchange_modules/org.mule.examples/accelerator-cim-global-library/1.1.2/accelerator-cim-global-library.raml
+  MarketTypes:  ../exchange_modules/org.mule.examples/accelerator-cim-market-library/1.2.0/accelerator-cim-market-library.raml
+  SharedTypes: ./SharedTypeLibrary.raml
+  CardTypes: ./CardTypeLibrary.raml
+
+types:
+  Account:
+    description: Base type for all financial accounts
+    discriminator: accountType
+    properties:
+      id:
+        type: string | nil
+        description: The global identifier for this item
+      name:
+        type: string
+        description: Descriptive name of the account
+      accountNumber:
+        type: string
+      accountType:
+        type: string
+        description: Discriminator property set to the specific type of account by name (e.g., DepositAccount) 
+      primaryAccountOwner:
+        type: string | MarketTypes.Customer
+        description: References the primary owner of this account by their universal identifier
+      secondaryAccountOwners?:
+        type: array
+        items: string | MarketTypes.Customer
+        description: References additional owner(s) of this account by their global identifiers
+      institutionId?:
+        type: string
+        description: Optional reference to the financial institution this account is held at
+      accountStatus:
+        type: SharedTypes.AccountStatusType
+      accountBalance?:
+        type: number
+        description: Current credit (positive) or debit (negative) balance of the account
+      availableBalance?:
+        type: number
+        description: Amount of funds (or credit) available for withdrawal
+      accountCurrency:
+        type: string
+      accountLabel?:
+        type: string
+        description: A customer-provided nickname for the account
+      interestRate?:
+        type: number
+      taxIdentificationNumber?:
+        type: string
+        description: Government tax identifier (e.g., SSN or SIN) of the primary account owner
+      openedDate:
+        type: date-only
+        description: Date the account was opened
+      closedDate?:
+        type: date-only
+        description: Date the account was closed
+      lastTransactionDate?:
+        type: date-only
+        description: Date a transaction was last recorded for this account
+      lastTransactionType?:
+        type: string
+        description: References the type of transaction last recorded for this account
+      lastTransactionAmount?:
+        type: number
+        description: Amount of the last transaction recorded for this account
+      lastStatementDate?:
+        type: date-only
+        description: Date the last statement was produced for this account
+      notes?:
+        type: string
+        description: Free-form notes recorded for this account
+      externalIds?:
+        type: array
+        items: GlobalTypes.ExternalId
+        description: External identifiers for this account (e.g., Salesforce, MDM, etc.)
+      auditInfo?:
+        type: GlobalTypes.AuditInfo
+
+  AccountTransactionHistory:
+    type: object
+    description: Defines a transaction summary object with account balances
+    properties:
+      transactionId:
+        type: string
+        description: The global identifier of the transaction
+      transactionName:
+        type: string
+        description: Display name of the transaction
+      transactionDescription?:
+        type: string
+        description: Optional detailed description of the transaction
+      transactionAmount:
+        type: number
+      transactionType:
+        type: string
+        description: The specific type of transaction by name (e.g., CreditTransaction) 
+      transactionStatus:
+        type: SharedTypes.TransactionStatusType
+      transactionDate:
+        type: date-only
+        description: Date the transaction was recorded in the system
+      transactionPostedDate?:
+        type: date-only
+        description: Date the transaction was actually reflected in the account (aka settlement date)
+      accountCurrentBalance?:
+        type: number
+        description: Current credit (positive) or debit (negative) balance of the account
+      accountAvailableBalance?:
+        type: number
+        description: Amount of funds (or credit) available for withdrawal, inclusive of overdraft
+
+  BlockchainAccount:
+    type: Account
+    description: Base type for all blockchain-based accounts
+    properties:
+      blockchainAccountType:
+        enum: [ BITCOIN, ETHEREUM, GENERIC, RIPPLE ]
+        description: Identifies the specific blockchain that this account is associated with or indicates a generic blockchain asset
+      initialTransactionId:
+        type: string
+        description: References the initial transaction that created the underlying blockchain asset
+      lastTransactionId?:
+        type: string
+        description: References the last transaction created on this asset
+
+  CreditAccount:
+    type: Account
+    description: Base type for all credit-based accounts
+    properties:
+      creditLimit:
+        type: number
+      lastPaymentDate?:
+        type: date-only
+        description: Date the last deposit was made on
+      lastPaymentAmount?:
+        type: number
+        description: Amount of the last payment made
+
+  CreditCardAccount:
+    type: CreditAccount
+    description: Defines a credit account with credit cards associated with it
+    properties:
+      creditCards?:
+        type: array
+        items: string | CardTypes.CreditCard
+
+  DepositAccount:
+    type: Account
+    description: Defines an account used for checking, savings, or money market activities
+    properties:
+      depositAccountType:
+        enum: [ CHECKING, MONEY_MARKET, SAVINGS ]
+      routingNumber:
+        type: string
+        description: Branch or routing number for the account
+      overdraftLimit?:
+        type: number
+        default: 0.0
+        description: Indicates the maximum deficit in an account; a value of 0.0 means no overdraft is allowed
+      minimumBalance?:
+        type: number
+        description: The minimum amount that must be held in a Money Market account
+      dailyWithdrawalLimit?:
+        type: number
+        description: Maximum amount that can be withdrawn directly from this account per day
+      monthlyWithdrawalLimit?:
+        type: number
+        description: Maximum amount that can be withdrawn directly from this account per month
+      maximumMonthlyWithdrawals?:
+        type: integer
+        description: The maximum number of withdrawals allowed per month
+      lastDepositDate?:
+        type: date-only
+        description: Date the last deposit was made on
+      lastWithdrawalDate?:
+        type: date-only
+        description: Date the last withdrawal was made on
+
+  GeneralLedgerAccount:
+    type: Account
+    description: Base type for all General Ledger accounts
+    properties:
+      glAccountType:
+        enum: [ ASSET, CLEARING, EQUITY, EXPENSE, LIABILITY, REVENUE, SUSPENSE ]
+        description: Identifies the specific purpose for this GL account
+
+  LoanAccount:
+    type: CreditAccount
+    description: Defines a credit account used specifically for loans
+    properties:
+      loanType:
+        enum: [ DEBT_CONSOLIDATION, HOME_IMPROVEMENT, OTHER, VEHICLE ]
+      originalLoanAmount:
+        type: number
+      loanDurationMonths?:
+        type: integer
+        minimum: 0
+      minimumPayment?:
+        type: number
+      principalBalance:
+        type: number

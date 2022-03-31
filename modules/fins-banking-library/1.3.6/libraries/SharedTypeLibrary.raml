@@ -1,0 +1,24 @@
+#%RAML 1.0 Library
+usage: Defines reusable types and enumerations internal to the Banking Library
+
+types:
+  AccountStatusType:
+    enum: [ CLOSED, ON_HOLD, OPEN, PENDING ]
+
+  CardStatusType:
+    enum: [ ACTIVE, LOCKED, INACTIVE ]
+
+  CardControlType:
+    enum: [ ATM, INTERNATIONAL, ONLINE, POS ]
+
+  ChannelType:  
+      enum: [ LOCAL, Bank_SWIFT, Bank_ACH, Bank_Fedwire, Bank_SEPA, Blockchain, TransferWise, Stripe, Square, Zelle, VISA, MasterCard, AMEX, Discover ]
+
+  DocumentStatusType:
+    enum: [ ARCHIVED, CURRENT, DRAFT, OBSOLETE ]
+
+  PaymentType:
+     enum: [ CREDIT_TRANSFER, DEBIT_TRANSFER, REMITTANCE, CASH_IN, CASH_OUT, PAYMENT, TRANSFER, INTERNATIONAL_TRANSFER, NATIONAL_TRANSFER, CREDIT_CARD_PAYMENT, ALTERNATIVE_PAYMENT, CRYPTO_PAYMENT ]
+
+  TransactionStatusType:
+    enum: [ CANCELLED, HOLD, INITIAL, PENDING, POSTED ]

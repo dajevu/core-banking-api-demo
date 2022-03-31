@@ -1,0 +1,44 @@
+#%RAML 1.0 Library
+usage: Defines types used in payment processing
+
+uses:
+  GlobalTypes: ../exchange_modules/org.mule.examples/accelerator-cim-global-library/1.1.2/accelerator-cim-global-library.raml
+  SharedTypes: ./SharedTypeLibrary.raml
+
+types:
+  Institution:
+    description: Base type for all financial institutions
+    discriminator: institutionType
+    type: object
+    properties: 
+      id:
+        type: string | nil
+        description: The global identifier for this item
+      name:
+        type: string
+        description: Descriptive name of the institution
+      institutionType:
+        type: string
+        description: Discriminator property set to the specific type of institution by name (e.g., Bank) 
+      externalIds?:
+        type: array
+        items: GlobalTypes.ExternalId
+        description: External identifiers for this institution (e.g., IBAN, BBAN, etc.)
+      auditInfo?:
+        type: GlobalTypes.AuditInfo
+
+  Bank:
+    type: Institution
+    description: Defines properties specific to a banking institution
+    properties:
+      bankCode:
+        type: string
+      headquartersCountry:  
+        type: string
+        description: Country of primary headquarters
+      headquartersRegion?:
+        type: string
+        description: Province or state of primary headquarters
+      headquartersCity?:
+        type: string
+        description: City of primary headquarters

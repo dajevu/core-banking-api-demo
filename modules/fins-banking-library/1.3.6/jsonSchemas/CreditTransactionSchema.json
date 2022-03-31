@@ -1,0 +1,281 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/CreditTransaction",
+  "definitions": {
+    "CreditTransaction": {
+      "type": "object",
+      "discriminator": "transactionType",
+      "additionalProperties": true,
+      "required": [
+        "creditAccountId",
+        "name",
+        "transactionNumber",
+        "id",
+        "transactionAmount",
+        "transactionDate",
+        "transactionStatus",
+        "transactionType"
+      ],
+      "properties": {
+        "creditAccountId": {
+          "description": "Identifier of the account that funds were deposited into",
+          "type": "string"
+        },
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The global identifier for this item"
+        },
+        "name": {
+          "type": "string",
+          "description": "Display name of this transaction"
+        },
+        "description": {
+          "type": "string",
+          "description": "Optional detailed description of this transaction"
+        },
+        "transactionNumber": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A unique number assigned to this transaction"
+        },
+        "transactionAmount": {
+          "type": "number"
+        },
+        "transactionType": {
+          "type": "string",
+          "description": "Discriminator property set to the specific type of transaction by name (e.g., CreditTransaction)"
+        },
+        "transactionSubType": {
+          "enum": [
+            "ATM",
+            "CARD",
+            "CASH",
+            "CHECK",
+            "FEE",
+            "INTEREST",
+            "MISC",
+            "PAYMENT",
+            "POS",
+            "TRANSFER"
+          ],
+          "type": "string"
+        },
+        "transactionStatus": {
+          "enum": [
+            "CANCELLED",
+            "HOLD",
+            "PENDING",
+            "POSTED"
+          ],
+          "type": "string"
+        },
+        "transactionDate": {
+          "type": "string",
+          "description": "Date the transaction was recorded in the system",
+          "format": "date"
+        },
+        "postedDate": {
+          "type": "string",
+          "description": "Date the transaction was actually reflected in the account (aka settlement date)",
+          "format": "date"
+        },
+        "checkNumber": {
+          "type": "integer",
+          "description": "Optional check number associated with this transaction"
+        },
+        "isDisputed": {
+          "type": "boolean",
+          "description": "Flags whether or not this transaction is/was being disputed"
+        },
+        "disputedReason": {
+          "enum": [
+            "DUPLICATE",
+            "FRAUD",
+            "OTHER",
+            "UNRECOGNIZED"
+          ],
+          "description": "The reason this transaction is/was being disputed",
+          "type": "string"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Free-form notes recorded for this transaction"
+        },
+        "externalIds": {
+          "type": "array",
+          "description": "External identifiers for this transaction (e.g., Salesforce, MDM, etc.)",
+          "items": {
+            "type": "object",
+            "example": {
+              "externalIdType": [
+                {
+                  "id": "id1",
+                  "name": "adipisicing labore Duis in anim"
+                }
+              ],
+              "externalId": "Ut",
+              "id": "irure proident cillum deserunt dolor",
+              "status": "INVALID",
+              "statusLastChangedDate": "1999-11-26T02:28:11.661Z"
+            },
+            "description": "Defines a structure for referencing an entity in external systems",
+            "additionalProperties": true,
+            "required": [
+              "externalIdType",
+              "externalId",
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "externalId": {
+                "type": "string",
+                "description": "A unique identifier assigned to an entity in another system"
+              },
+              "externalIdType": {
+                "description": "Identifies the system that owns or otherwise recognizes this unique identifier",
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "description": "Identifies the external system that owns or otherwise recognizes a particular identifier",
+                      "type": "object",
+                      "additionalProperties": true,
+                      "required": [
+                        "id",
+                        "name"
+                      ],
+                      "properties": {
+                        "id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "status": {
+                "enum": [
+                  "VALID",
+                  "INVALID"
+                ],
+                "description": "Indicates whether this identifier is currently valid or not",
+                "type": "string"
+              },
+              "statusLastChangedDate": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Date and time of the last change in status"
+              }
+            }
+          }
+        },
+        "auditInfo": {
+          "description": "Defines standard system audit fields available for most types",
+          "type": "object",
+          "example": {
+            "isDeleted": true,
+            "createdBy": "commodo minim dolore est",
+            "updatedBy": "dolor quis nulla",
+            "updatedDate": "1950-01-23T19:52:29.659Z",
+            "createdDate": "1950-01-23T19:52:29.659Z"
+          },
+          "additionalProperties": true,
+          "required": [
+            "isDeleted",
+            "createdBy",
+            "updatedBy",
+            "updatedDate",
+            "createdDate"
+          ],
+          "properties": {
+            "createdDate": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Timestamp of when the entity was created"
+            },
+            "createdBy": {
+              "type": "string",
+              "description": "Identifies the system or user which created the entity"
+            },
+            "updatedDate": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Timestamp of when the entity was last updated"
+            },
+            "updatedBy": {
+              "type": "string",
+              "description": "Identifies the system or user which last updated the entity"
+            },
+            "isDeleted": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Indicates whether or not the entity has been soft-deleted"
+            }
+          }
+        }
+      }
+    }
+  }
+}

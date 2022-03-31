@@ -1,0 +1,95 @@
+#%RAML 1.0 Library
+usage: Defines types used in payment processing
+
+uses:
+  SharedTypes: ./SharedTypeLibrary.raml
+
+types:
+  PaymentAccount:
+    description: Defines basic account information required for payment reconciliation
+    type: object
+    properties:
+      AccountId:
+        type: string
+      AccountType?:
+        type: string
+      BankId?:
+        type: string
+      BankName?:
+        type: string
+
+  PaymentAmount:
+    description: Defines payment amount information required for reconciliation
+    type: object
+    properties:
+      Amount: 
+        type: number
+      Currency?:
+        type: string
+
+  PaymentExecutionRequest:
+    description: Defines the input properties for a multi-stage routing request
+    type: object
+    properties: 
+      Amount?: 
+        type: number
+      CreditorBank?:
+        type: string
+      CreditorBankCountry?:
+        type: string
+      CreditorAccountType?:
+        type: string
+      CreditorAcountCurrency?:
+        type:  string
+      DebtorBank?:
+        type: string
+      DebtorBankCountry?:
+        type: string
+      DebtorAccountType?:
+        type: string
+      DebtorAcountCurrency?:
+        type: string
+      TransferType?:
+        type: SharedTypes.PaymentType
+      ChannelType?:
+        type:  SharedTypes.ChannelType
+      Stage?:
+        enum: [ OB_EXPERIENCE, CORE_PROCESS, PROTOCOL_SYSTEM ]
+
+  PaymentExecutionResponse:
+    description: Defines the output properties for a multi-stage routing request
+    type:  object
+    properties: 
+      PaymentExecutionPath: 
+        type: string
+      PaymentExecutionCode: 
+        type: string
+
+  PaymentSummary:
+    description: Defines payment summary information required for reconciliation
+    type: object
+    properties:
+      PaymentId:
+        type: string
+      Amount:
+        type: PaymentAmount
+      TransactionCost?:
+        type: number
+      TransactionDate:
+        type: datetime
+      TransferProtocol:
+        enum: [ ACH, Fedwire, SWIFT ]
+      PaymentPath:
+        type: string
+      PaymentStatus:
+        type: string
+      Debtor:
+        type: object
+        properties:
+          Account:
+            type: PaymentAccount
+      Creditor:
+        type: object
+        properties:
+          Account:
+            type: PaymentAccount

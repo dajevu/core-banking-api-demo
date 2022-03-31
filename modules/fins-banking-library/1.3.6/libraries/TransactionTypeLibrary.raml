@@ -1,0 +1,102 @@
+#%RAML 1.0 Library
+usage: Defines types representing Transactions on bank accounts
+
+uses:
+  GlobalTypes: ../exchange_modules/org.mule.examples/accelerator-cim-global-library/1.1.2/accelerator-cim-global-library.raml
+  SharedTypes: ./SharedTypeLibrary.raml
+
+types:
+  DebitTransaction:
+    type: Transaction
+    description: Defines a transaction that debits an amount from an account
+    properties:
+      debitAccountId:
+        type: string
+        description: Identifier of the account that funds were withdrawn from
+
+  CreditTransaction:
+    type: Transaction
+    description: Defines a transaction that credits an amount to an account
+    properties:
+      creditAccountId:
+        description: Identifier of the account that funds were deposited into
+        type: string
+
+  Transaction:
+    description: Base type for all transactions
+    discriminator: transactionType
+    properties:
+      id:
+        type: string | nil
+        description: The global identifier for this item
+      name:
+        type: string
+        description: Display name of this transaction
+      description?:
+        type: string
+        description: Optional detailed description of this transaction
+      transactionNumber:
+        type: integer | nil
+        description: A unique number assigned to this transaction
+      transactionAmount:
+        type: number
+      transactionType:
+        type: string
+        description: Discriminator property set to the specific type of transaction by name (e.g., CreditTransaction) 
+      transactionSubType?:
+        enum: [ ATM, CARD, CASH, CHECK, FEE, INTEREST, MISC, PAYMENT, POS, TRANSFER ]
+      transactionStatus:
+        type: SharedTypes.TransactionStatusType
+      transactionDate:
+        type: date-only
+        description: Date the transaction was recorded in the system
+      postedDate?:
+        type: date-only
+        description: Date the transaction was actually reflected in the account (aka settlement date)
+      checkNumber?:
+        type: integer
+        description: Optional check number associated with this transaction
+      isDisputed?:
+        type: boolean
+        description: Flags whether or not this transaction is/was being disputed
+      disputedReason?:
+        enum: [ DUPLICATE, FRAUD, OTHER, UNRECOGNIZED ]
+        description: The reason this transaction is/was being disputed
+      notes?:
+        type: string
+        description: Free-form notes recorded for this transaction
+      externalIds?:
+        type: array
+        items: GlobalTypes.ExternalId
+        description: External identifiers for this transaction (e.g., Salesforce, MDM, etc.)
+      auditInfo?:
+        type: GlobalTypes.AuditInfo
+
+  PaymentTransaction:
+    type: TransferTransaction
+    description: Defines a transaction that represents a payment from one account to another
+    properties:
+      paymentType:
+        type: SharedTypes.PaymentType
+      originatorId: 
+        type: string
+      transactionCurrency: 
+        type: string
+        description: Currency of the actual transaction amount
+      exchangeCurrency?: 
+        type: string
+        description: Currency of the original payment amount
+      exchangeRate?:  
+        type: number
+        description: The rate used to obtain the transaction amount from the original amount
+
+  TransferTransaction:
+    type: Transaction
+    description: Defines a transaction that represents a generic transfer from one account to another
+    properties:
+      debitAccountId:
+        type: string
+        description: Identifier of the account that funds were transferred out of
+      creditAccountId:
+        description: Identifier of the account that funds were transferred into
+        type: string

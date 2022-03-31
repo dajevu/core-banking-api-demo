@@ -1,0 +1,59 @@
+#%RAML 1.0 Library
+usage: Defines types representing loan applications
+
+uses:
+  GlobalTypes: ../exchange_modules/org.mule.examples/accelerator-cim-global-library/1.1.2/accelerator-cim-global-library.raml
+  MarketTypes:  ../exchange_modules/org.mule.examples/accelerator-cim-market-library/1.2.0/accelerator-cim-market-library.raml
+  DocumentTypes: ./DocumentTypeLibrary.raml
+
+types:
+  LoanApplication:
+    description: Defines the typical properties captured during the loan application process
+    properties:
+      id:
+        type: string | nil
+        description: The global identifier for this item
+      applicationType:
+        enum: [ INDIVIDUAL, JOINT ]
+      loanPurpose:
+        enum: [ DEBT_CONSOLIDATION, HOME_IMPROVEMENT, OTHER, VEHICLE ]
+      customers:
+        type: array
+        items: string | MarketTypes.Customer
+      timeAtAddressMonths:
+        type: number
+      housingStatus:
+        enum: [ OTHER, OWN, RENT ]
+      taxIdentificationNumber:
+        type: string
+      driversLicenseLastDigits?:
+        type: string
+      requestedLoanAmount:
+        type: number
+      loanDurationMonths?:
+        type: number
+      citizenship:
+        type: string
+      employmentStatus:
+        enum: [ EMPLOYED, RETIRED, SELF, STUDENT, UNEMPLOYED ]
+      hasAdditionalIncome:
+        type: boolean
+      additionalIncomeAmount?:
+        type: number
+      additionalIncomeSource?:
+        enum: [ ALIMONY, BONUS, CHILD_SUPPORT, COMMISSION, DISABILITY, INVESTMENT_INCOME, MILITARY_ALLOWANCE, OTHER ]
+      monthlyHousingCostsAmount?:
+        type: number
+      estimatedHomeEquityAmount?:
+        type: number
+      totalLiquidAssetsAmount?:
+         type: number
+      totalRetirementAssetsAmount?:
+         type: number
+      loanApplicationStatus:
+        enum: [ BOOKED, DECLINED, PENDING, REJECTED, SUBMITTED ]
+      loanDocuments?:
+        type: array
+        items: string | DocumentTypes.LoanDocument
+      auditInfo?:
+        type: GlobalTypes.AuditInfo

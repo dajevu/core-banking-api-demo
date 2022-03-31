@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/PaymentAccount",
+  "definitions": {
+    "PaymentAccount": {
+      "description": "Defines basic account information required for payment reconciliation",
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "AccountId"
+      ],
+      "properties": {
+        "AccountId": {
+          "type": "string"
+        },
+        "AccountType": {
+          "type": "string"
+        },
+        "BankId": {
+          "type": "string"
+        },
+        "BankName": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

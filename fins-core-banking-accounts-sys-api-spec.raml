@@ -1,0 +1,301 @@
+#%RAML 1.0
+title: FINS Core Banking Accounts System API
+description: System API for working with accounts, transactions, and cards in a generic Core Banking system.
+version: v1
+mediaType: application/json
+
+securedBy: [ GlobalResources.BasicAuth ]
+
+uses: 
+  GlobalResources: ./exchange_modules/org.mule.examples/accelerator-global-resources/2.2.0/accelerator-global-resources.raml
+  BankingTypes: ./exchange_modules/org.mule.examples/fins-banking-library/1.3.6/fins-banking-library.raml
+  
+/ping:
+  get:
+    is: [ GlobalResources.PingResponse ]
+    description: Get the current health status of this API.
+
+/accounts:
+  description: Base resource representing financial accounts.
+  get:
+    description: Find one or more accounts. When matching on a given identifier, the precedence order is to match on Core Banking account identifier first, then external identifier. Results can be filtered by customer identifier, account number, and account type. The result set can be narrowed further by including only accounts created or updated during a given time period. This range can be closed or open ended in either direction.
+    is: [ GlobalResources.ErrorResponses, GlobalResources.Trackable, GlobalResources.Pageable ]
+    queryParameters:
+      accountId?:
+        type: string
+        description: Match on Core Banking account identifier
+      externalId?:
+        type: string
+        description: Match on an external identifier
+      customerId?:
+        type: string
+        description: Filter by Core Banking customer identifier
+      accountNumber?:
+        type: string
+        description: Filter by account number
+      accountType?:
+        type: string
+        description: Filter by account type
+        example: "DepositAccount"
+      fromDate?:
+        type: datetime
+        description: Include only accounts created or updated on or after this date and time
+      toDate?:
+        type: datetime
+        description: Include only accounts created or updated on or before this date and time
+    responses:
+      200:
+        body:
+          application/json:
+            type: BankingTypes.Account[]
+  post:
+    is: [ GlobalResources.ErrorResponses, GlobalResources.Trackable, GlobalResources.Locatable ]
+    description: Create a new account.
+    body:
+      application/json:
+        type: BankingTypes.Account
+    responses: 
+      201:
+        body: 
+          application/json:
+            type: GlobalResources.BasicResponse
+
+  /{accountId}:
+    get:
+      is: [ GlobalResources.ErrorResponses, GlobalResources.Trackable ]
+      description: Return details for an existing account.
+      responses:
+        200:
+          body:
+            application/json:
+              type: BankingTypes.Account
+    patch:
+      is: [ GlobalResources.ErrorResponses, GlobalResources.Trackable ]
+      description: Update details for an existing account. Returns a complete version of the updated account.
+      body:
+        application/json:
+          type: BankingTypes.Account
+      responses:
+        200:
+          body: 
+            application/json:
+              type: BankingTypes.Account
+
+    /transactions:
+      description: Manage transactions for an account.
+      get:
+        description: Find one or more transactions for an account. Results can be filtered by transaction type, sub-type, transaction date, and posted date. The result set can be narrowed further by including only certain amounts, check numbers, or entries created or updated during a given time period. These ranges can be closed or open ended in either direction.
+        is: [ GlobalResources.ErrorResponses, GlobalResources.Trackable, GlobalResources.Pageable ]
+        queryParameters:
+          transactionType?:
+            type: string
+            description: Filter by transaction type
+            example: "DebitTransaction"
+          transactionSubType?: 
+            type: string
+            description: Filter by transaction sub-type
+            example: "CASH"
+          transactionDate?:
+            type: date-only
+            description: Filter by transaction effective date (includes pending transactions)
+          postedDate?:
+            type: date-only
+            description: Filter by transaction posted date (excludes pending transactions)
+          fromAmount?:
+            type: number
+            description: Include only transactions of this amount or higher
+          toAmount?:
+            type: number
+            description: Include only transactions of this amount or lower
+          fromCheckNumber?:
+            type: integer
+            description: Include only transactions of type CHECK starting from this check number
+          toCheckNumber?:
+            type: integer
+            description: Include only transactions of type CHECK up to this check number
+          fromDate?:
+            type: datetime
+            description: Include only transactions created or updated on or after this date and time
+          toDate?:
+            type: datetime
+            description: Include only transactions created or updated on or before this date and time
+        responses:
+          200:
+            body:
+              application/json:
+                type: BankingTypes.Transaction[]
+      post:
+        is: [ GlobalResources.ErrorResponses, GlobalResources.Trackable, GlobalResources.Locatable ]
+        description: Create a new transaction entry for this account.
+        body:
+          application/json:
+            type: BankingTypes.Transaction
+        responses:
+          201:
+            body:
+              application/json:
+                type: GlobalResources.BasicResponse
+
+      /history:
+        get:
+          description: Obtain transaction history for an account, including running balances, in descending order by transaction date.
+          is: [ GlobalResources.ErrorResponses, GlobalResources.Trackable, GlobalResources.Pageable ]
+          queryParameters:
+            toDate?:
+              type: date-only
+              description: Include history up to and including the specified transaction date
+          responses:
+            200:
+              body:
+                application/json:
+                  type: BankingTypes.AccountTransactionHistory[]
+
+    /cards:
+      description: Manage cards for an account.
+      get:
+        description: Find one or more cards. Results can be filtered by card type. The result set can be narrowed further by including only cards created or updated during a given time period. This range can be closed or open ended in either direction.
+        is: [ GlobalResources.ErrorResponses, GlobalResources.Trackable, GlobalResources.Pageable ]
+        queryParameters:
+          cardType?:
+            type: string
+            description: Filter by card type
+            example: "DebitCard"
+          fromDate?:
+            type: datetime
+            description: Include only cards created or updated on or after this date and time
+          toDate?:
+            type: datetime
+            description: Include only cards created or updated on or before this date and time
+        responses:
+          200:
+            body:
+              application/json:
+                type: BankingTypes.Card[]
+      post:
+        is: [ GlobalResources.ErrorResponses, GlobalResources.Trackable, GlobalResources.Locatable ]
+        description: Create a new card entry for this account.
+        body:
+          application/json:
+            type: BankingTypes.Card
+        responses:
+          201:
+            body:
+              application/json:
+                type: GlobalResources.BasicResponse
+
+/transactions:
+  description: General lookup and retrieval of transactions
+  get:
+    description: Find one or more transactions. When multiple identifiers are provided, the precedence order is to match on Core Banking transaction identifier first, then external identifier, and finally originator identifier. If no identifiers are provided, all transaction entries will be returned. Results can be filtered by account identifier, transaction type, sub-type, transaction date, and posted date. The result set can be narrowed further by including only entries created or updated during a given time period. This range can be closed or open ended in either direction.
+    is: [ GlobalResources.ErrorResponses, GlobalResources.Trackable, GlobalResources.Pageable ]
+    queryParameters:
+      transactionId?:
+        type: string
+        description: Match on Core Banking transaction identifier
+      externalId?:
+        type: string
+        description: Match on an external identifier
+      originatorId?:
+        type: string
+        description: Match on an identifier provided by the originating system
+      accountId?:
+        type: string
+        description: Filter by Core Banking account identifier
+      transactionType?:
+        type: string
+        description: Filter by transaction type
+        example: "DebitTransaction"
+      transactionSubType?: 
+        type: string
+        description: Filter by transaction sub-type
+        example: "CASH"
+      transactionDate?:
+        type: date-only
+        description: Filter by transaction effective date (includes pending transactions)
+      postedDate?:
+        type: date-only
+        description: Filter by transaction posted date (excludes pending transactions)
+      fromDate?:
+        type: datetime
+        description: Include only transactions created or updated on or after this date and time
+      toDate?:
+        type: datetime
+        description: Include only transactions created or updated on or before this date and time
+    responses:
+      200:
+        body:
+          application/json:
+            type: BankingTypes.Transaction[]
+
+  /{transactionId}:
+    get:
+      is: [ GlobalResources.Trackable, GlobalResources.ErrorResponses ]
+      description: Retrieve an existing transaction entry.
+      responses:
+        200:
+          body:
+            application/json:
+              type: BankingTypes.Transaction
+    patch:
+      is: [ GlobalResources.Trackable, GlobalResources.ErrorResponses ]
+      description: Update an existing transaction entry. Returns a complete version of the updated transaction entry.
+      body:
+        application/json:
+          type: BankingTypes.Transaction
+      responses:
+        200:
+          body:
+            application/json:
+              type: BankingTypes.Transaction
+
+/cards:
+  description: General lookup and retrieval of cards.
+  get:
+    description: Find one or more cards. When matching on a given identifier, the precedence order is to match on Core Banking card identifier first, then external identifier. If no identifiers are provided, all cards will be returned. Results can be filtered by account identifier and card type. The result set can be narrowed further by including only cards created or updated during a given time period. This range can be closed or open ended in either direction.
+    is: [ GlobalResources.ErrorResponses, GlobalResources.Trackable, GlobalResources.Pageable ]
+    queryParameters:
+      cardId?:
+        type: string
+        description: Match on global card identifier
+      externalId?:
+        type: string
+        description: Match on an external identifier
+      accountId?:
+        type: string
+        description: Filter by Core Banking account identifier
+      cardType?:
+        type: string
+        description: Filter by card type
+        example: "DebitCard"
+      fromDate?:
+        type: datetime
+        description: Include only cards created or updated on or after this date and time
+      toDate?:
+        type: datetime
+        description: Include only cards created or updated on or before this date and time
+    responses:
+      200:
+        body:
+          application/json:
+            type: BankingTypes.Card[]
+
+  /{cardId}:
+    get:
+      is: [ GlobalResources.Trackable, GlobalResources.ErrorResponses ]
+      description: Retrieve an existing card entry.
+      responses:
+        200:
+          body:
+            application/json:
+              type: BankingTypes.Card
+    patch:
+      is: [ GlobalResources.Trackable, GlobalResources.ErrorResponses ]
+      description: Update an existing card entry. Returns a complete version of the updated card entry.
+      body:
+        application/json:
+          type: BankingTypes.Card
+      responses:
+        200:
+          body:
+            application/json:
+              type: BankingTypes.Card
