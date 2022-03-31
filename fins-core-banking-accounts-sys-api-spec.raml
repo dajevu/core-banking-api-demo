@@ -136,52 +136,6 @@ uses:
               application/json:
                 type: GlobalResources.BasicResponse
 
-      /history:
-        get:
-          description: Obtain transaction history for an account, including running balances, in descending order by transaction date.
-          is: [ GlobalResources.ErrorResponses, GlobalResources.Trackable, GlobalResources.Pageable ]
-          queryParameters:
-            toDate?:
-              type: date-only
-              description: Include history up to and including the specified transaction date
-          responses:
-            200:
-              body:
-                application/json:
-                  type: BankingTypes.AccountTransactionHistory[]
-
-    /cards:
-      description: Manage cards for an account.
-      get:
-        description: Find one or more cards. Results can be filtered by card type. The result set can be narrowed further by including only cards created or updated during a given time period. This range can be closed or open ended in either direction.
-        is: [ GlobalResources.ErrorResponses, GlobalResources.Trackable, GlobalResources.Pageable ]
-        queryParameters:
-          cardType?:
-            type: string
-            description: Filter by card type
-            example: "DebitCard"
-          fromDate?:
-            type: datetime
-            description: Include only cards created or updated on or after this date and time
-          toDate?:
-            type: datetime
-            description: Include only cards created or updated on or before this date and time
-        responses:
-          200:
-            body:
-              application/json:
-                type: BankingTypes.Card[]
-      post:
-        is: [ GlobalResources.ErrorResponses, GlobalResources.Trackable, GlobalResources.Locatable ]
-        description: Create a new card entry for this account.
-        body:
-          application/json:
-            type: BankingTypes.Card
-        responses:
-          201:
-            body:
-              application/json:
-                type: GlobalResources.BasicResponse
 
 /transactions:
   description: General lookup and retrieval of transactions
@@ -248,54 +202,3 @@ uses:
             application/json:
               type: BankingTypes.Transaction
 
-/cards:
-  description: General lookup and retrieval of cards.
-  get:
-    description: Find one or more cards. When matching on a given identifier, the precedence order is to match on Core Banking card identifier first, then external identifier. If no identifiers are provided, all cards will be returned. Results can be filtered by account identifier and card type. The result set can be narrowed further by including only cards created or updated during a given time period. This range can be closed or open ended in either direction.
-    is: [ GlobalResources.ErrorResponses, GlobalResources.Trackable, GlobalResources.Pageable ]
-    queryParameters:
-      cardId?:
-        type: string
-        description: Match on global card identifier
-      externalId?:
-        type: string
-        description: Match on an external identifier
-      accountId?:
-        type: string
-        description: Filter by Core Banking account identifier
-      cardType?:
-        type: string
-        description: Filter by card type
-        example: "DebitCard"
-      fromDate?:
-        type: datetime
-        description: Include only cards created or updated on or after this date and time
-      toDate?:
-        type: datetime
-        description: Include only cards created or updated on or before this date and time
-    responses:
-      200:
-        body:
-          application/json:
-            type: BankingTypes.Card[]
-
-  /{cardId}:
-    get:
-      is: [ GlobalResources.Trackable, GlobalResources.ErrorResponses ]
-      description: Retrieve an existing card entry.
-      responses:
-        200:
-          body:
-            application/json:
-              type: BankingTypes.Card
-    patch:
-      is: [ GlobalResources.Trackable, GlobalResources.ErrorResponses ]
-      description: Update an existing card entry. Returns a complete version of the updated card entry.
-      body:
-        application/json:
-          type: BankingTypes.Card
-      responses:
-        200:
-          body:
-            application/json:
-              type: BankingTypes.Card
