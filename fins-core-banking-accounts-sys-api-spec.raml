@@ -7,8 +7,8 @@ mediaType: application/json
 securedBy: [ GlobalResources.BasicAuth ]
 
 uses: 
-  GlobalResources: ./exchange_modules/org.mule.examples/accelerator-global-resources/2.2.0/accelerator-global-resources.raml
-  BankingTypes: ./exchange_modules/org.mule.examples/fins-banking-library/1.3.6/fins-banking-library.raml
+  GlobalResources: ./modules/accelerator-global-resources/2.2.0/accelerator-global-resources.raml
+  BankingTypes: ./modules/fins-banking-library/1.3.6/fins-banking-library.raml
   
 /ping:
   get:
